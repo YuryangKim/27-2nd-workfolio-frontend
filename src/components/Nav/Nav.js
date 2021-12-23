@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import NavDestinationModal from './NavDestinationModal/NavDestinationModal';
@@ -7,11 +7,16 @@ import NavCalendarModal from './NavCalendarModal/NavCalendarModal';
 function Nav() {
   const [handleDestinationModal, setHandleDestinationModal] = useState(false);
   const [handleCalendarModal, setHandleCalendarModal] = useState(false);
+  const [tok, setTok] = useState('');
+
+  useEffect(() => {
+    setTok(sessionStorage.getItem('token'));
+  }, []);
   return (
     <NavBar>
       <NavBarContainer>
         <NavLogo>
-          <Link to="/main">
+          <Link to="/">
             <LogoImg src="/images/logo.svg" alt="워크 폴리오" />
           </Link>
         </NavLogo>
@@ -66,7 +71,11 @@ function Nav() {
               <MyPage src="/images/person.svg" alt="마이 페이지" />
             </Link>
             <Link to="/login">
-              <LoginText>LOGIN</LoginText>
+              {tok === null ? (
+                <LoginText>LOGIN</LoginText>
+              ) : (
+                <LoginText>LOGOUT</LoginText>
+              )}
             </Link>
           </LogInContainer>
         </MenuContainer>
@@ -96,7 +105,7 @@ const NavBarContainer = styled.div`
 
 const NavLogo = styled.div`
   cursor: pointer;
-  padding: 0 350px 0 50px;
+  padding: 0 350px 0 100px;
 `;
 
 const LogoImg = styled.img`
